@@ -1,4 +1,5 @@
 Jakarta persistence API.
+JPA internally uses Hibernate for every operation.
 
 H2 DB: it's a Java SQL DB. written in Java. In memory DB. can be disk based also.
        Its a embedded Db means it runs in the same JVM where a Java app runs. it has its own server. it provides browser based console and very light in size 2.5mb jar.

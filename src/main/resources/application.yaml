@@ -1,3 +1,12 @@
 spring:
   application:
     name: ecom-application
+  h2:
+    console:
+      enabled: true  #This enables the Browser console
+  datasource:
+    url: jdbc:h2:mem:test # this will create in Memory DB with DB name test
+  jpa:
+    show-sql: true # to show sql query in the console logs
+    hibernate:
+      ddl-auto: create # to execute DDL statement i.e, CRUD operation. create will crate new table everytime when application starts or update the table schema.
