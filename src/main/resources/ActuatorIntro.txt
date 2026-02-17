@@ -12,3 +12,18 @@ By default /info endpoint return empty object.
 
 http://localhost:8080/actuator/metrics --> This will give all the enndpoints name to be used with http://localhost:8080/actuator/metrics/{requiredMetricName}.
 Metrics end points give info about Disk space, hikari connection, jdbc connection, JVM info, threads, system cpu count/usgae, process cpu count/usage, tomcat sessions. etc.
+
+http://localhost:8080/actuator/loggers - > This will give log levels applied to diff package level in the application as well as library used in the app.
+http://localhost:8080/actuator/loggers/{pkgname} - detailed info for that pkg.
+
+log level can be set to thse levels for a pkg:
+"levels": [
+    "OFF",
+    "ERROR",
+    "WARN",
+    "INFO",
+    "DEBUG",
+    "TRACE"
+  ]
+We can dynamically change the log level of the app or at pkg level without restarting application. used to find the root cause of app without restarting.
+Send a POST req :http://localhost:8080/actuator/loggers/com.app.ecom with body :{"configuredLevel": "DEBUG"}
