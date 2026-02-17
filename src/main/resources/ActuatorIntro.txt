@@ -9,3 +9,6 @@ If we want to get more info like disk space usage, DB status of DB used in app, 
  management.endpoint.health.show-details: ALWAYS
 
 By default /info endpoint return empty object.
+
+http://localhost:8080/actuator/metrics --> This will give all the enndpoints name to be used with http://localhost:8080/actuator/metrics/{requiredMetricName}.
+Metrics end points give info about Disk space, hikari connection, jdbc connection, JVM info, threads, system cpu count/usgae, process cpu count/usage, tomcat sessions. etc.
