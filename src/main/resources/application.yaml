@@ -1,15 +1,26 @@
 spring:
   application:
     name: ecom-application
-  h2:
-    console:
-      enabled: true  #This enables the Browser console
   datasource:
-    url: jdbc:h2:mem:test # this will create in Memory DB with DB name test
+    url: jdbc:postgresql://localhost:5432/ecomDB
+    username: postgresql
+    password: 9852041
+    #driver-class-name: dfgd
   jpa:
-    show-sql: true # to show sql query in the console logs
+    database: POSTGRESQL
+    show-sql: true
     hibernate:
-      ddl-auto: create # to execute DDL statement i.e, CRUD operation. create will crate new table everytime when application starts or update the table schema.
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect  # This make sure that query generated using Spring boot and JPA is according to Postgresql DB standard.
+#  h2:
+#    console:
+#      enabled: true  #This enables the Browser console
+#  datasource:
+#    url: jdbc:h2:mem:test # this will create in Memory DB with DB name test
+#  jpa:
+#    show-sql: true # to show sql query in the console logs
+#    hibernate:
+#      ddl-auto: create # to execute DDL statement i.e, CRUD operation. create will crate new table everytime when application starts or update the table schema.
 
 management:
   endpoints:
