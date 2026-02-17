@@ -1,0 +1,6 @@
+Provides built in production-ready features to monitor and manage your app. like health, matrix, info etc.
+Faetures:
+ Built-in endpoints
+ Ability to view realtime metrics, Dashboard -> hostname/metric. tells CPU usage, no of DB connections ect.
+ customizable -> we can add new endpoints, customize existing endpoints, who can control the endpoints like who can access.
+ 
