@@ -10,3 +10,9 @@ spring:
     show-sql: true # to show sql query in the console logs
     hibernate:
       ddl-auto: create # to execute DDL statement i.e, CRUD operation. create will crate new table everytime when application starts or update the table schema.
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" # exposes all endpoints, not suitable for prod env
