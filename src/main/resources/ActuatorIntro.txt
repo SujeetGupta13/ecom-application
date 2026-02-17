@@ -3,4 +3,7 @@ Faetures:
  Built-in endpoints
  Ability to view realtime metrics, Dashboard -> hostname/metric. tells CPU usage, no of DB connections ect.
  customizable -> we can add new endpoints, customize existing endpoints, who can control the endpoints like who can access.
- 
+
+http://localhost:8080/actuator/health -> returns {"status":"UP"}
+If we want to get more info like disk space usage, DB status of DB used in app, then we can get that info by adding some config like below. Actuator gets which DB to check from pom.xml
+ management.endpoint.health.show-details: ALWAYS

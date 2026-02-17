@@ -16,3 +16,7 @@ management:
     web:
       exposure:
         include: "*" # exposes all endpoints, not suitable for prod env
+  endpoint:
+    health:
+      show-details: ALWAYS # default is NEVER
+      #show-details: WHEN_AUTHORIZED # for authorized user
