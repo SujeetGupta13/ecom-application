@@ -15,7 +15,9 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*" # exposes all endpoints, not suitable for prod env
+        #include: "*" # exposes all endpoints, not suitable for prod env
+         include: beans, health # will expose only /actuator, /actuator/beans and /actuator/health
+
   endpoint:
     health:
       show-details: ALWAYS # default is NEVER
