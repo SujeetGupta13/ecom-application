@@ -27,3 +27,8 @@ log level can be set to thse levels for a pkg:
   ]
 We can dynamically change the log level of the app or at pkg level without restarting application. used to find the root cause of app without restarting.
 Send a POST req :http://localhost:8080/actuator/loggers/com.app.ecom with body :{"configuredLevel": "DEBUG"}
+
+http://localhost:8080/actuator/beans -> list all beans available in application context with beans alias name,type of bean, scope like Singleton and dependent on which other beans.
+ex: "cartController":{"aliases":[],"scope":"singleton","type":"com.app.ecom.controller.CartController","resource":"file [D:\\EmbarkX\\ecom-application\\target\\classes\\com\\app\\ecom\\controller\\CartController.class]","dependencies":["cartService"]}
+### This endpoint exposes the internal str of the application, not recommended in prod.######
+
