@@ -32,3 +32,5 @@ http://localhost:8080/actuator/beans -> list all beans available in application 
 ex: "cartController":{"aliases":[],"scope":"singleton","type":"com.app.ecom.controller.CartController","resource":"file [D:\\EmbarkX\\ecom-application\\target\\classes\\com\\app\\ecom\\controller\\CartController.class]","dependencies":["cartService"]}
 ### This endpoint exposes the internal str of the application, not recommended in prod.######
 
+POST request  http://localhost:8080/actuator/shutdown : This endpoint does graceful shutdown,means wait for all the request/process to complete and the shutdown.
+We will have to enable this endpoint explicitly. request type is POST, so that no body hits the endpoint from browser.

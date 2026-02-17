@@ -20,6 +20,8 @@ management:
     health:
       show-details: ALWAYS # default is NEVER
       #show-details: WHEN_AUTHORIZED # for authorized user
+    shutdown:
+      enabled: true
   info:
     env:
       enabled: true
@@ -29,3 +31,6 @@ info:
     name: ecom-application
     description: App built by me
     version: 1.0.0
+
+server:
+  shutdown: GRACEFUL # explicit way to say, shutdown the app gracefully.when we shutdown application by clicking on red button in intelliJ here.
