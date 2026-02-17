@@ -20,3 +20,12 @@ management:
     health:
       show-details: ALWAYS # default is NEVER
       #show-details: WHEN_AUTHORIZED # for authorized user
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: ecom-application
+    description: App built by me
+    version: 1.0.0
