@@ -3,8 +3,8 @@ spring:
     name: ecom-application
   datasource:
     url: jdbc:postgresql://localhost:5432/ecomDB
-    username: postgresql
-    password: 9852041
+    username: sujeet
+    password: sujeet
     #driver-class-name: dfgd
   jpa:
     database: POSTGRESQL

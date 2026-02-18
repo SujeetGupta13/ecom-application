@@ -1,0 +1,168 @@
+Containerization : 
+It solves the issue of dependency management, compatibility issue, environmental inconsistency.
+Docker:
+it helps to automate the deployment, scaling and managementof app using containerization.
+using this we can solve issue of working on my machine, not on some other machine.
+
+Docker container has CODE <>, RUUNTIME, LIBRARIES, SYSTEM TOOLS
+Dockerfile is a file that contains instructions to build a docker image.
+
+Docker CLI lets interact user with docker system, it takes command and pass it to docker daemon.
+Daemon executes those commands. Daemon creates containers from images. Images are blue print of containers.
+with 1 image multiple conatiners can be craeted.
+Docker registry stores the docker images. Registry can be public or private.
+
+Dcoker uses by default docker hub to pull images.
+
+AWS provides the docker as a service, and AWS provides Amazon Elastic container Registry(ECR) as a image registry.  Google provides Artifact registry as a image registry.
+Microsoft provides Azure container registry as a image registry. RED HAT provides QUAY as a image registry.
+
+EXPOSE 8080 means : docker can be accessed on port 8080 from host machine.
+ENTRYPOINT tells what command to execute when container starts.
+
+## We can create image with docker file. But With Spring boot we don't to define docker file. we have maven plugin <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId></plugin>
+This Plugin creates images based on the dependency defined in pom.xml
+spring-boot-maven-plugin uses Cloud Native Buildpacks under the hood to create the Image.
+
+Command to create image using Spring boot:
+Go to project directory :
+./mvnw spring-boot:build-image "-Dspring-boot.build-image.imageName=<your-dockerhub-username>/<your-image-name>"
+./mvnw spring-boot:build-image "-Dspring-boot.build-image.imageName=sujeet13/ecom-application"
+Before running above command, start the docker engine/ (desktop docker application)
+After success this message Successfully built image 'docker.io/sujeet13/ecom-application:latest'
+we can see this image in docker app along with 2 other related paketobuildpacks.
+We can push tyhis image to docker HUb also using this commands:
+first login to GitHub via terminal : docker login then follow instruction.
+then :
+docker push sujeet13/ecom-application
+
+#### Most USed Docker commands#####
+docker pull <image>
+docker push <username/image>
+docker run -it -d -p <host-port>:<container-port> --name <name> <image> -> to run container <name> of the container.
+docker stop <container-id/container-name>
+docker start <container-id/container-name>
+docker rm <container-id/container-name> --> to remove stopped container
+docker rmi <image-id/image-name> --> to remove image from local storage.
+docker ps -> running container
+docker ps -a -> running and stopped container
+docker images -> all the images
+
+to access a running container we need to login and that we can do using this command:
+docker exec -it <container-name/container-id> bash
+docker build -t <username/image> .    ->> build a image from docker file (. means current dir), <username/image> -> image name
+docker logs <container-name/container-id>  --> 
+docker inspect <container-name/container-id>  ->> gives details info about particular container.
+
+##########################################################
+will be running 1 instance of postgres and 1 instance of pgadmin to show ability of docker network. 
+docker run -d --name db -e POSTGRES_PASSWORD=mysecretpassword postgres:18  --> -e POSTGRES_PASSWORD=mysecretpassword used to set environment variable to container. 
+docker run -d --name pgadmin -e PGADMIN_DEFAULT_EMAIL=user@domain.com -e PGADMIN_DEFAULT_PASSWORD=SuperSecret dpage/pgadmin4
+
+docker exec -it pgadmin ping db  --> this command is trying to ping postgres DB running in db container from pgadmin running in pgadmin container. means using exec command, we can run command inside a container.
+result ping: bad address 'db'.
+So, Use docker network to communicate.
+docker network create my-network 
+It will create network and will return id of network.
+Now, delete both 2 db and pgadmin container.
+docker rm -f db pgadmin
+Now run this command :
+docker run -d --name db --network my-network -e POSTGRES_PASSWORD=mysecretpassword postgres:18
+docker run -d --name pgadmin --network my-network -e PGADMIN_DEFAULT_EMAIL=user@domain.com -e PGADMIN_DEFAULT_PASSWORD=SuperSecret dpage/pgadmin4
+Now this command will run :: docker exec -it pgadmin ping db
+bcz of docker network, containers in the same network can communicate with each other using container name.
+docker network prune  --> it will delete all networks.
+
+########### We can create multiple container manually by running docker run command multiple times like this:
+Create a Docker network:
+docker network create postgres
+
+Start the PostgreSQL service:
+docker run -d \
+  --name postgres_container \
+  -e POSTGRES_USER=sujeet \
+  -e POSTGRES_PASSWORD=sujeet \
+  -e PGDATA=/data/postgres \
+  -v postgres:/data/postgres \
+  -p 5432:5432 \
+  --network postgres \
+  --restart unless-stopped 
+  postgres:18
+docker run -d --name postgres_container -e POSTGRES_USER=sujeet -e POSTGRES_PASSWORD=sujeet -e PGDATA=/data/postgres -v postgres:/data/postgres -p 5432:5432 --network postgres --restart unless-stopped postgres:18
+
+Start the pgAdmin service:
+docker run -d \
+  --name pgadmin_container \
+  -e PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org \
+  -e PGADMIN_DEFAULT_PASSWORD=admin \
+  -e PGADMIN_CONFIG_SERVER_MODE=False \
+  -v pgadmin:/var/lib/pgadmin \
+  -p 5050:80 \
+  --network postgres \
+  --restart unless-stopped 
+  dpage/pgadmin4
+docker run -d --name pgadmin_container -e PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org -e PGADMIN_DEFAULT_PASSWORD=admin -e PGADMIN_CONFIG_SERVER_MODE=False -v pgadmin:/var/lib/pgadmin -p 5050:80 --network postgres --restart unless-stopped dpage/pgadmin4
+
+Instead of creating container one by one, we can use Docker comspose tool, A tool to define and manage multiple container using a single .yml file.
+Example:
+Fie name will be :  docker.compose.yml
+Content inside the file : 
+
+services:
+  postgres:
+    container_name: postgres_container
+    image: postgres:18
+    environment:
+      POSTGRES_USER: sujeet
+      POSTGRES_PASSWORD: sujeet
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - postgres
+    restart: unless-stopped
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:
+
+First network name postgres will be created then 2 volumes and then 2 container.
+
+Now we can access pgadmin on http://localhost:5050 and onpgadmin we can connect to Posgresql server using server connection feature on pgadmin with hostname/address as postgres.
+IntelliJ automatically detects the docker compose file and give options to run the docker compose yml file using "docker-compose up"(a command to run all the container defined in the compose file) internally, If docker plugin is installed in the IntelliJ.
+We can run docker-compose.yml file from terminal as well with this command :
+docker compose up   --> to start all the containers
+docker compose up -d --> in detached mode
+docker compose down  --> to stop all the containers
+
+In the compose.yml for postgres conatiner we have mentioned environment: POSTGRES_USER: sujeet, So a DB name sujeet will be created by default.
+
+While connecting the Spring boot app ecom-application to docker DB, I was facing error like Caused by: org.postgresql.util.PSQLException: FATAL: invalid value for parameter "TimeZone": "Asia/Calcutta"
+Then had to add VM arguments in IntelliJ like:
+-Duser.timezone=Asia/Kolkata
+
+## If we face any issue related to container starting or docker app, then from system tray right click on docker app icon then choose troubleshoot and then clear/purge data and then restart docker desktop app.
+
+

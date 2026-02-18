@@ -1,0 +1,8 @@
+PostgreSQL is a ORDBMS Object-relational DB management system.
+
+Why PostgreSQL is popular:
+SQL compliance
+we can define our own data types, operators, indexes etc.
+performance is very good with complex query.
+Strong community support.
+Data integrity.
