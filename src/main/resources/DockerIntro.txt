@@ -149,6 +149,11 @@ volumes:
   pgadmin:
 
 First network name postgres will be created then 2 volumes and then 2 container.
+✔ Network my-ecom-microservices_postgres Created                                                                                                                                                                               0.1s
+ ✔ Volume my-ecom-microservices_pgadmin   Created                                                                                                                                                                               0.0s
+ ✔ Volume my-ecom-microservices_postgres  Created                                                                                                                                                                               0.0s
+ ✔ Container postgres_container           Created                                                                                                                                                                               0.2s
+ ✔ Container pgadmin_container            Created
 
 Now we can access pgadmin on http://localhost:5050 and onpgadmin we can connect to Posgresql server using server connection feature on pgadmin with hostname/address as postgres.
 IntelliJ automatically detects the docker compose file and give options to run the docker compose yml file using "docker-compose up"(a command to run all the container defined in the compose file) internally, If docker plugin is installed in the IntelliJ.
